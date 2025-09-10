@@ -1,4 +1,4 @@
-# 🐉 gen-ia-discord-bot
+# 🐉 gen-ai-discord-bot
 
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green?logo=node.js)](https://nodejs.org/)
 [![Discord.js](https://img.shields.io/badge/discord.js-v14-blue?logo=discord)](https://discord.js.org/)
