@@ -21,7 +21,7 @@ With this project, you can run personalized slash commands and easily extend the
 ## 📂 Project Structure
 
 ```
-gen-ia-discord-bot/
+gen-ai-discord-bot/
 ├── .gitignore           
 ├── README.md            
 ├── deploy-commands.js   
