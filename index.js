@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits, Message } = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
 const OpenAI = require("openai");
 
 // Model API KEY
@@ -31,22 +31,22 @@ client.once("ready", () => {
 
 // When a message is send to server
 client.on("messageCreate", async (message) => {
+  if (message.author.bot) return;
   // Random chance of response
     if (Math.random() < 0.7) {
         try {
+          await message.channel.sendTyping();
             // Generate a responde using chat-gpt-5-nano
-            const response = await openai.chat.completions.create({
+            const response = await openai.responses.create({
                 model: "gpt-5-nano",
-                messages: [
-                  { role: "system", content: personality },
-                 { role: "user", content: message.content },
-                ],
-                max_tokens: 200,
-                temperature: 0.5,
+                reasoning: { effort: "low" },
+                input: [
+                  { role: "developer", content: personality },
+                 { role: "user", content: message.content || "React to the last message." },
+                ]
             });
-
-            const reply = response.choices[0].message.content.trim();
-            await message.reply(reply);
+            const text = (response?.output_text || "❄️ The frost fog obscures my thoughts…").trim();
+            await message.reply(text);
         } catch (error) {
             console.error("Erro in OpenAI API:", error);
             await message.reply("Viserion isn't here right now");
@@ -57,25 +57,21 @@ client.on("messageCreate", async (message) => {
 
 //Creates slash commands for server chat
 client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName === 'frozen') {
     try {
         await interaction.deferReply();
-      const response = await openai.chat.completions.create({
+      const response = await openai.responses.create({
         model: "gpt-5-nano",
-        messages: [
-          { role: "system", content: personality},
+        reasoning: { effort: "low" },
+        input: [
+          { role: "developer", content: personality},
           { role: "user", content: slashCommand },
-        ],
-        max_tokens: 200,
-        temperature: 0.5,
+        ]
       });
-
-      const reply = response.choices[0].message.content.trim();
-      await interaction.editReply(reply);
+      const text = (response?.output_text || "❄️ Silence falls upon the North…").trim();
+      await interaction.editReply(text);
     } catch (error) {
       console.error("Erro running slash command:", error);
-      await interaction.reply("Viserion is shrouded in mist... try again.");
     }
   }
 });
