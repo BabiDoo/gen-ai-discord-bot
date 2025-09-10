@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, Message } = require("discord.js");
 const OpenAI = require("openai");
 
 // Model API KEY
@@ -21,7 +21,7 @@ Interact with the users (using the chat history), beeing a member and friend of 
 `;
 
 // To slash commands
-const command = `
+const slashCommand = `
 Give a fact about game of thrones
 `;
 
@@ -38,7 +38,7 @@ client.on("messageCreate", async (message) => {
             const response = await openai.chat.completions.create({
                 model: "gpt-5-nano",
                 messages: [
-                    { role: "system", content: personality },
+                  { role: "system", content: personality },
                  { role: "user", content: message.content },
                 ],
                 max_tokens: 200,
@@ -59,15 +59,13 @@ client.on("messageCreate", async (message) => {
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName === 'frozen') {
-    const mind = interaction.options.getString('wich mind?');
-
     try {
         await interaction.deferReply();
       const response = await openai.chat.completions.create({
         model: "gpt-5-nano",
         messages: [
-          { role: "system", content: personality },
-          { role: "user", content: mind },
+          { role: "system", content: personality},
+          { role: "user", content: slashCommand },
         ],
         max_tokens: 200,
         temperature: 0.5,

@@ -4,12 +4,12 @@ require('dotenv').config();
 
 const commands = [
   new SlashCommandBuilder()
-    .setName('visao')
-    .setDescription('Receba uma resposta enigmática de Viserion')
+    .setName('frozen')
+    .setDescription('Receba um fato sobre Game of Thrones de Viserion')
     .addStringOption(option =>
-      option.setName('pergunta')
-        .setDescription('O que deseja perguntar ao Viserion?')
-        .setRequired(true)
+      option.setName('mind')
+        .setDescription('Wich mind?')
+        .setRequired(false)
     )
     .toJSON(),
 ];
